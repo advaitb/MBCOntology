@@ -213,167 +213,18 @@ class Test:
 
 if __name__ == '__main__':
     t = Test()
-    #lines = t.openFileLineWise('GO_Biological_Process_2017.txt')
-    #d = t.prepareOrderedDict(lines)  
-    #d = t.orderDictionaryWithKey(d)
-    #t.pickleDictToBinary('desktop','pickled_GO',d)
-    #d = t.readPickledDictFromBinary('desktop','pickled_GO')
-    #df = t.read('downloads','validation_results_summary_combined.jns','\t',header = 0)
-    #t.writeDictToFileLineWise(d,'GO_dict')
+    lines = t.openFileLineWise('GO_Biological_Process_2017.txt')
+    d = t.prepareOrderedDict(lines)  
+    d = t.orderDictionaryWithKey(d)
+    t.pickleDictToBinary('desktop','pickled_GO',d)
+    d = t.readPickledDictFromBinary('desktop','pickled_GO')
+    df = t.read('downloads','validation_results_summary_combined.jns','\t',header = 0)
+    t.writeDictToFileLineWise(d,'GO_dict')
     
-    #t.similar('activation of MAPKK activity', 'Acetylcholine-mediated control of postsynaptic potential')
+    t.similar('activation of MAPKK activity', 'Acetylcholine-mediated control of postsynaptic potential')
     
-    #t.createMappingFromBackbone('Downloads/','Mbc_backbone_go_processes_m.txt')
-    #t.prepareGODictFromJensHansenFormat('Downloads/','gene_association_upgraded_Homo_sapiens_2017June17.jns')
+    t.createMappingFromBackbone('Downloads/','Mbc_backbone_go_processes_m.txt')
+    t.prepareGODictFromJensHansenFormat('Downloads/','gene_association_upgraded_Homo_sapiens_2017June17.jns')
     
     t.jaccardAnalysis(t)
-    
-                 
-'''
-#Frequent Words Function
-def FrequentWordsWithMismatches( s, k, d ):
-    counts = {}
-    for i in range(len(s)-k+1):
-        for neighbor in neighbors(s[i:i+k],d):
-            print(neighbor)
-            if neighbor not in counts:
-                counts[neighbor] = 0
-            counts[neighbor] += 1
-    m = max(counts.values())
-    return [kmer for kmer in counts if counts[kmer] == m]
-
-#Finding neighbouring kmers
-def neighbors( s, d ):
-    #print(s, d)
-    if d == 0:
-        return [s]
-    if len(s) == 1:
-        return ['A','C','G','T']
-    out = []
-    for neighbor in neighbors(s[1:],d):
-        if hamming(s[1:],neighbor) < d:
-            out.extend(['A'+neighbor,'C'+neighbor,'G'+neighbor,'T'+neighbor])
-        else:
-            out.append(s[0] + neighbor)
-    print(out)    
-    return out
-
-#Hamming Distance between kmers
-def hamming( s, t ):
-    return sum([s[i] != t[i] for i in range(len(s))])
-
-#s = 'ACGTTGCATGTCGCATGATGCATGAGAGCT'
-s = 'ACGTTGCATGTCGCATGATGCATGAGAGCT'
-k = 4
-d = 1
-print(' '.join(FrequentWordsWithMismatches(s,k,d)))
-
-'''
-
-
-
-'''
-sequence = 'CATTCCAGTACTTCATGATGGCGTGAAGA'
-
-skew = []
-prev_val = 0
-skew.append(prev_val)
-for i in sequence:
-    if i == 'C':
-        prev_val -= 1
-        skew.append(prev_val)
-    elif i == 'G':
-        prev_val += 1
-        skew.append(prev_val)
-    else:
-        skew.append(prev_val)
-#print(skew)
-indexes = [i for i,j in enumerate(skew) if j == max(skew)]
-print(indexes)
-'''
-
-'''
-prev_val = 0
-min_val = 0
-indexes = []
-indexes.append(0)
-for i in range(len(Genome)):
-    if Genome[i] == 'C':
-        prev_val -= 1
-        if prev_val < min_val:
-            indexes = []
-            indexes.append(i+1)
-            min_val = prev_val
-        elif prev_val == min_val:
-            indexes.append(i+1)
-        else:
-            pass            
-    elif Genome[i] == 'G':
-        prev_val += 1
-    else:
-        pass
-print(indexes)
-'''
-
-
-
-
-
-
-
-'''
-with open("/Users/advaitbalaji/Desktop/EcGenome.txt","r") as f:
-    genome = f.read()
-    
-k, Length , t = 9,500,3
-overall_count = []
-for i in range(len(genome) - Length + 1):
-    count_dict ={}
-    mod_genome = genome[i:i+Length]
-    for j in range(len(mod_genome) - k + 1):
-        if mod_genome[j:j+k] in count_dict:
-            count_dict[mod_genome[j:j+k]] += 1
-            if count_dict[mod_genome[j:j+k]] >= t:
-                overall_count.append(mod_genome[j:j+k])
-        else:
-            count_dict[mod_genome[j:j+k]] = 1
-#print("YES")
-print(" ".join(list(set(overall_count))))
-'''            
-
-
-'''
-with open("/Users/advaitbalaji/Desktop/VBGenome.txt","r") as f:
-    Genome = f.read()
-
-Pattern = "CTTGATCAT"
-
-
-
-pat_index = []
-for i in range(len(Genome) - len(Pattern) + 1):
-    if Genome[i:i+len(Pattern)] == Pattern:
-        pat_index.append(str(i))
-print(" ".join(pat_index))
-
-'''
-
-'''
-Text = 'CGGAGGACTCTAGGTAACGCTTATCAGGTCCATAGGACATTCA'
-for k in range(3,4):
-    count_dict = {}
-    max_count = 0
-    for i in range(len(Text) - k + 1):
-        if Text[i:i+k] in count_dict:
-            count_dict[Text[i:i+k]] += 1
-            if max_count < count_dict[Text[i:i+k]]:
-                max_count = count_dict[Text[i:i+k]]
-        else:
-            count_dict[Text[i:i+k]] = 1
-
-    max_kmers = []
-    for i, j in count_dict.items():
-        if j == max_count:
-            max_kmers.append(i)
-    print(str(k)+": "+" ".join(max_kmers)+ " "+ str(max_count))
-'''
+   
